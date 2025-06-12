@@ -1,0 +1,2909 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gorilla Tag Mods</title>
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --card-bg-light: #ffffff;
+            --card-bg-dark: #333333;
+            --border-radius: 15px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            transition: var(--transition);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: var(--light-color);
+        }
+
+        body.dark-mode {
+            color: var(--light-color);
+        }
+
+        body.dark-mode #particles-js {
+            background-color: var(--dark-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode header {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .auth-section {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn i {
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2d9249;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #d33426;
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        /* Main content */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 150px);
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            padding-right: 20px;
+            transition: var(--transition);
+        }
+
+        .sidebar-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            text-align: left;
+            border: none;
+            background-color: transparent;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .sidebar-btn i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-btn:hover, .sidebar-btn.active {
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+
+        body.dark-mode .sidebar-btn:hover, 
+        body.dark-mode .sidebar-btn.active {
+            background-color: rgba(66, 133, 244, 0.2);
+        }
+
+        /* Content area */
+        .content {
+            flex: 1;
+            padding: 25px;
+            background-color: rgba(var(--card-bg-light), 0.9);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .content {
+            background-color: rgba(var(--card-bg-dark), 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--card-bg-light);
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 10;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        body.dark-mode .dropdown-content {
+            background-color: var(--card-bg-dark);
+        }
+
+        .dropdown-content a {
+            color: inherit;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        body.dark-mode .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* User info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .user-info:hover .avatar {
+            transform: scale(1.1);
+        }
+
+        /* Auth forms */
+        .auth-form {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 35px;
+            background-color: rgba(var(--card-bg-light), 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .auth-form {
+            background-color: rgba(var(--card-bg-dark), 0.95);
+        }
+
+        .auth-form h2 {
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg-light);
+            color: inherit;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        body.dark-mode .form-group input {
+            background-color: #444;
+            border-color: #555;
+        }
+
+        .form-footer {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Item lists */
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .item-card {
+            background-color: var(--card-bg-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .item-card {
+            background-color: #444;
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .item-card h3 {
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .item-card p {
+            margin-bottom: 15px;
+            color: inherit;
+            opacity: 0.9;
+        }
+
+        .item-card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Admin controls */
+        .admin-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
+        /* Add forms */
+        .add-form {
+            background-color: var(--card-bg-light);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .add-form {
+            background-color: #444;
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .add-form h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg-light);
+            color: inherit;
+            font-size: 16px;
+        }
+
+        body.dark-mode .form-row input {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success-message {
+            color: var(--secondary-color);
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Password form */
+        .password-form {
+            max-width: 450px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: rgba(var(--card-bg-light), 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .password-form {
+            background-color: rgba(var(--card-bg-dark), 0.95);
+        }
+
+        /* Home page styles */
+        .welcome-section {
+            text-align: center;
+            padding: 50px 20px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(66, 133, 244, 0.05));
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(66, 133, 244, 0.1);
+        }
+
+        body.dark-mode .welcome-section {
+            background: linear-gradient(135deg, rgba(66, 133, 244, 0.3), rgba(66, 133, 244, 0.2));
+            border-color: rgba(66, 133, 244, 0.4);
+        }
+
+        .welcome-section h1 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            background-color: var(--card-bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        body.dark-mode .feature-card {
+            background-color: #444;
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: inherit;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Server name */
+        .server-name {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .server-name-input {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 35px;
+            text-align: center;
+            font-size: 2.2rem;
+            padding: 12px;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            background-color: transparent;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        body.dark-mode .server-name-input {
+            border-color: var(--primary-color);
+        }
+
+        .edit-server-name-btn {
+            display: none;
+            margin: 0 auto 35px;
+        }
+
+        /* Settings */
+        .settings-card {
+            padding: 25px;
+            margin-bottom: 25px;
+            background-color: var(--card-bg-light);
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .settings-card {
+            background-color: #444;
+            border-color: rgba(255,255,255,0.05);
+        }
+
+        .settings-card h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .settings-option {
+            border-bottom-color: #555;
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        /* Toggle switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Menu button for mobile */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+            padding: 10px;
+        }
+
+        /* Stats cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Search bar */
+        .search-bar {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        body.dark-mode .search-bar input {
+            background-color: #444;
+            border-color: #555;
+            color: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 20px;
+                display: none;
+            }
+            
+            .sidebar.active {
+                display: block;
+            }
+            
+            .menu-btn {
+                display: block;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .item-list {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .welcome-section p {
+                font-size: 1.1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 24px;
+            }
+            
+            .auth-section {
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .welcome-section {
+                padding: 30px 15px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Particles.js container -->
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-code-branch logo-icon"></i>
+                <span id="serverNameDisplay">Gorilla Tag Mods</span>
+            </div>
+            <button class="menu-btn" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div id="authSection" class="auth-section">
+                <button id="showLoginBtn" class="btn btn-outline">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Zaloguj się</span>
+                </button>
+                <button id="showRegisterBtn" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Zarejestruj się</span>
+                </button>
+            </div>
+            <div id="userSection" class="user-info hidden">
+                <div class="dropdown">
+                    <div class="avatar" id="userAvatar">K</div>
+                    <div class="dropdown-content">
+                        <a href="#" id="settingsBtn"><i class="fas fa-cog"></i> Ustawienia konta</a>
+                        <a href="#" id="changePasswordBtn"><i class="fas fa-key"></i> Zmień hasło</a>
+                        <a href="#" id="darkModeBtn"><i class="fas fa-moon"></i> Dark Mode</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>
+                    </div>
+                </div>
+                <span id="usernameDisplay">Kornol</span>
+            </div>
+        </header>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="auth-form">
+            <h2><i class="fas fa-sign-in-alt"></i> Logowanie</h2>
+            <div class="form-group">
+                <label for="loginUsername">Nazwa użytkownika</label>
+                <input type="text" id="loginUsername" placeholder="Wprowadź nazwę użytkownika">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Hasło</label>
+                <input type="password" id="loginPassword" placeholder="Wprowadź hasło">
+            </div>
+            <div class="form-group">
+                <label class="settings-option">
+                    <span>Automatyczne logowanie</span>
+                    <label class="switch">
+                        <input type="checkbox" id="autoLoginCheckbox">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            </div>
+            <button id="submitLogin" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Zaloguj się
+            </button>
+            <div class="form-footer">
+                <span>Nie masz konta? <a id="switchToRegister">Zarejestruj się</a></span>
+            </div>
+            <p id="loginError" class="error-message"></p>
+        </div>
+
+        <!-- Register Modal -->
+        <div id="registerModal" class="auth-form hidden">
+            <h2><i class="fas fa-user-plus"></i> Rejestracja</h2>
+            <div class="form-group">
+                <label for="registerUsername">Nazwa użytkownika</label>
+                <input type="text" id="registerUsername" placeholder="Wprowadź nazwę użytkownika">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Hasło</label>
+                <input type="password" id="registerPassword" placeholder="Wprowadź hasło">
+            </div>
+            <div class="form-group">
+                <label for="registerConfirmPassword">Potwierdź hasło</label>
+                <input type="password" id="registerConfirmPassword" placeholder="Wprowadź hasło ponownie">
+            </div>
+            <button id="submitRegister" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-user-plus"></i> Zarejestruj się
+            </button>
+            <div class="form-footer">
+                <span>Masz już konto? <a id="switchToLogin">Zaloguj się</a></span>
+            </div>
+            <p id="registerError" class="error-message"></p>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div id="changePasswordModal" class="password-form hidden">
+            <h2><i class="fas fa-key"></i> Zmiana hasła</h2>
+            <div class="form-group">
+                <label for="currentPassword">Aktualne hasło</label>
+                <input type="password" id="currentPassword" placeholder="Wprowadź aktualne hasło">
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Nowe hasło</label>
+                <input type="password" id="newPassword" placeholder="Wprowadź nowe hasło">
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">Potwierdź nowe hasło</label>
+                <input type="password" id="confirmNewPassword" placeholder="Wprowadź nowe hasło ponownie">
+            </div>
+            <button id="submitChangePassword" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-save"></i> Zmień hasło
+            </button>
+            <button id="cancelChangePassword" class="btn btn-outline" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Anuluj
+            </button>
+            <p id="changePasswordError" class="error-message"></p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content hidden">
+            <div class="sidebar" id="sidebar">
+                <button class="sidebar-btn active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>Strona główna</span>
+                </button>
+                <button class="sidebar-btn" data-tab="mods">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>Mody</span>
+                </button>
+                <button class="sidebar-btn" data-tab="videos">
+                    <i class="fas fa-video"></i>
+                    <span>Filmy</span>
+                </button>
+                <button class="sidebar-btn" data-tab="tutorials">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Tutoriale</span>
+                </button>
+                <button class="sidebar-btn" data-tab="channels">
+                    <i class="fas fa-users"></i>
+                    <span>Kanały</span>
+                </button>
+                <button class="sidebar-btn" data-tab="stats">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statystyki</span>
+                </button>
+                <button class="sidebar-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Ustawienia</span>
+                </button>
+            </div>
+            <div class="content">
+                <!-- Home Tab -->
+                <div id="homeTab" class="tab-content active">
+                    <div class="welcome-section">
+                        <h1 id="welcomeServerName">Witaj w Gorilla Tag Mods!</h1>
+                        <p>Najlepsze źródło modyfikacji, poradników i filmów związanych z Gorilla Tag. Dołącz do naszej społeczności i rozwiń swoje doświadczenie z grą!</p>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i> Pobierz najnowsze mody
+                        </button>
+                    </div>
+                    
+                    <div class="features">
+                        <div class="feature-card">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <h3>Mody</h3>
+                            <p>Odkryj najlepsze modyfikacje do Gorilla Tag, które urozmaicą Twoją rozgrywkę i dodadzą nowe funkcje. Wszystkie mody są bezpieczne i regularnie aktualizowane.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-video"></i>
+                            <h3>Filmy</h3>
+                            <p>Obejrzyj filmy instruktażowe i poradniki, które pomogą Ci w pełni wykorzystać potencjał gry. Od podstawowych mechanik po zaawansowane techniki.</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Tutoriale</h3>
+                            <p>Naucz się instalować modyfikacje i korzystać z nich krok po kroku dzięki naszym szczegółowym tutorialom. Idealne dla początkujących i zaawansowanych graczy.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mods Tab -->
+                <div id="modsTab" class="tab-content">
+                    <div id="modsAdminControls" class="admin-controls hidden">
+                        <div class="search-bar">
+                            <input type="text" id="modsSearch" placeholder="Wyszukaj mody...">
+                            <button id="searchModsBtn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button id="addModBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Dodaj Mod
+                        </button>
+                    </div>
+                    <div id="addModForm" class="add-form hidden">
+                        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy mod</h3>
+                        <div class="form-row">
+                            <input type="text" id="modName" placeholder="Nazwa moda">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="modLink" placeholder="Link do moda">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="modVersion" placeholder="Wersja">
+                        </div>
+                        <div class="form-row">
+                            <textarea id="modDescription" placeholder="Opis moda" rows="3" style="width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ddd;"></textarea>
+                        </div>
+                        <button id="submitMod" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Dodaj
+                        </button>
+                        <button id="cancelMod" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Anuluj
+                        </button>
+                    </div>
+                    <h2><i class="fas fa-puzzle-piece"></i> Mody</h2>
+                    <div class="item-list" id="modsList">
+                        <!-- Mods will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Videos Tab -->
+                <div id="videosTab" class="tab-content">
+                    <div id="videosAdminControls" class="admin-controls hidden">
+                        <div class="search-bar">
+                            <input type="text" id="videosSearch" placeholder="Wyszukaj filmy...">
+                            <button id="searchVideosBtn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button id="addVideoBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Dodaj Film
+                        </button>
+                    </div>
+                    <div id="addVideoForm" class="add-form hidden">
+                        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy film</h3>
+                        <div class="form-row">
+                            <input type="text" id="videoName" placeholder="Nazwa filmu">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="videoLink" placeholder="Link do filmu">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="videoAuthor" placeholder="Autor">
+                        </div>
+                        <div class="form-row">
+                            <textarea id="videoDescription" placeholder="Opis filmu" rows="3" style="width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ddd;"></textarea>
+                        </div>
+                        <button id="submitVideo" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Dodaj
+                        </button>
+                        <button id="cancelVideo" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Anuluj
+                        </button>
+                    </div>
+                    <h2><i class="fas fa-video"></i> Filmy</h2>
+                    <div class="item-list" id="videosList">
+                        <!-- Videos will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tutorials Tab -->
+                <div id="tutorialsTab" class="tab-content">
+                    <div id="tutorialsAdminControls" class="admin-controls hidden">
+                        <div class="search-bar">
+                            <input type="text" id="tutorialsSearch" placeholder="Wyszukaj tutoriale...">
+                            <button id="searchTutorialsBtn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button id="addTutorialBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Dodaj Tutorial
+                        </button>
+                    </div>
+                    <div id="addTutorialForm" class="add-form hidden">
+                        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy tutorial</h3>
+                        <div class="form-row">
+                            <input type="text" id="tutorialName" placeholder="Nazwa tutorialu">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="tutorialLink" placeholder="Link do tutorialu">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="tutorialLevel" placeholder="Poziom trudności">
+                        </div>
+                        <div class="form-row">
+                            <textarea id="tutorialDescription" placeholder="Opis tutorialu" rows="3" style="width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ddd;"></textarea>
+                        </div>
+                        <button id="submitTutorial" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Dodaj
+                        </button>
+                        <button id="cancelTutorial" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Anuluj
+                        </button>
+                    </div>
+                    <h2><i class="fas fa-graduation-cap"></i> Tutoriale</h2>
+                    <div class="item-list" id="tutorialsList">
+                        <!-- Tutorials will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Channels Tab -->
+                <div id="channelsTab" class="tab-content">
+                    <div id="channelsAdminControls" class="admin-controls hidden">
+                        <div class="search-bar">
+                            <input type="text" id="channelsSearch" placeholder="Wyszukaj kanały...">
+                            <button id="searchChannelsBtn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <button id="addChannelBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Dodaj Kanał
+                        </button>
+                    </div>
+                    <div id="addChannelForm" class="add-form hidden">
+                        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy kanał</h3>
+                        <div class="form-row">
+                            <input type="text" id="channelName" placeholder="Nazwa kanału">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="channelLink" placeholder="Link do kanału">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="channelSubscribers" placeholder="Liczba subskrybentów">
+                        </div>
+                        <div class="form-row">
+                            <textarea id="channelDescription" placeholder="Opis kanału" rows="3" style="width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ddd;"></textarea>
+                        </div>
+                        <button id="submitChannel" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Dodaj
+                        </button>
+                        <button id="cancelChannel" class="btn btn-outline">
+                            <i class="fas fa-times"></i> Anuluj
+                        </button>
+                    </div>
+                    <h2><i class="fas fa-users"></i> Kanały</h2>
+                    <div class="item-list" id="channelsList">
+                        <!-- Channels will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Stats Tab -->
+                <div id="statsTab" class="tab-content">
+                    <h2><i class="fas fa-chart-bar"></i> Statystyki</h2>
+                    
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>Łączna liczba modów</h3>
+                            <p id="totalMods">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Łączna liczba filmów</h3>
+                            <p id="totalVideos">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Łączna liczba tutoriali</h3>
+                            <p id="totalTutorials">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Łączna liczba kanałów</h3>
+                            <p id="totalChannels">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-history"></i> Ostatnia aktywność</h3>
+                        <div id="recentActivity" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Activity will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settingsTab" class="tab-content">
+                    <h2><i class="fas fa-cog"></i> Ustawienia</h2>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-user"></i> Konto</h3>
+                        <div class="settings-option">
+                            <span>Nazwa użytkownika</span>
+                            <span id="settingsUsernameDisplay"></span>
+                        </div>
+                        <div class="settings-option">
+                            <span>Data rejestracji</span>
+                            <span id="registrationDate">Nieznana</span>
+                        </div>
+                        <div class="settings-option">
+                            <button id="changePasswordSettingsBtn" class="btn btn-outline">
+                                <i class="fas fa-key"></i> Zmień hasło
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> Preferencje</h3>
+                        <div class="settings-option">
+                            <span>Tryb ciemny</span>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-option">
+                            <span>Automatyczne logowanie</span>
+                            <label class="switch">
+                                <input type="checkbox" id="autoLoginToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-option">
+                            <span>Animacje</span>
+                            <label class="switch">
+                                <input type="checkbox" id="animationsToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="serverSettingsCard" class="settings-card hidden">
+                        <h3><i class="fas fa-server"></i> Ustawienia serwera</h3>
+                        <div class="server-name" id="serverNameSettingsDisplay"></div>
+                        <input type="text" id="serverNameInput" class="server-name-input hidden">
+                        <button id="editServerNameBtn" class="btn btn-primary edit-server-name-btn">
+                            <i class="fas fa-edit"></i> Edytuj nazwę serwera
+                        </button>
+                        <button id="saveServerNameBtn" class="btn btn-primary edit-server-name-btn hidden">
+                            <i class="fas fa-save"></i> Zapisz zmiany
+                        </button>
+                        <button id="cancelEditServerNameBtn" class="btn btn-outline edit-server-name-btn hidden">
+                            <i class="fas fa-times"></i> Anuluj
+                        </button>
+                        
+                        <div class="settings-option" style="margin-top: 20px;">
+                            <span>Wersja systemu</span>
+                            <span>v2.0.0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3><i class="fas fa-info-circle"></i> O aplikacji</h3>
+                        <p style="margin-bottom: 15px; line-height: 1.6;">
+                            Gorilla Tag Mods to platforma dla społeczności graczy Gorilla Tag, 
+                            zapewniająca dostęp do najlepszych modyfikacji, tutoriali i filmów.
+                        </p>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-question-circle"></i> Pomoc
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-bug"></i> Zgłoś problem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particles.js library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Dane użytkowników
+        let users = JSON.parse(localStorage.getItem('gorillaTagUsers')) || [
+            { 
+                username: "Kornol", 
+                password: "20100", 
+                autoLogin: false,
+                registrationDate: new Date().toISOString(),
+                lastLogin: null
+            }
+        ];
+
+        // Dane początkowe
+        let data = JSON.parse(localStorage.getItem('gorillaTagData')) || {
+            serverName: "Gorilla Tag Mods",
+            mods: [
+                { 
+                    name: "Monke Mod Manager", 
+                    link: "https://example.com/mod1",
+                    version: "1.2.0",
+                    description: "Kompleksowy menedżer modyfikacji dla Gorilla Tag",
+                    addedDate: new Date().toISOString()
+                },
+                { 
+                    name: "Gorilla Tag Custom Maps", 
+                    link: "https://example.com/mod2",
+                    version: "2.1.3",
+                    description: "Dodaje możliwość tworzenia i grania na własnych mapach",
+                    addedDate: new Date(Date.now() - 86400000).toISOString() // Wczoraj
+                }
+            ],
+            videos: [
+                { 
+                    name: "Jak zainstalować mody", 
+                    link: "https://youtube.com/video1",
+                    author: "Monke Tutorials",
+                    description: "Kompletny przewodnik po instalacji modyfikacji",
+                    addedDate: new Date().toISOString()
+                },
+                { 
+                    name: "Najlepsze mody 2023", 
+                    link: "https://youtube.com/video2",
+                    author: "VR Expert",
+                    description: "Przegląd najlepszych modyfikacji w tym roku",
+                    addedDate: new Date(Date.now() - 172800000).toISOString() // 2 dni temu
+                }
+            ],
+            tutorials: [
+                { 
+                    name: "Instalacja modów - krok po kroku", 
+                    link: "https://example.com/tutorial1",
+                    level: "Łatwy",
+                    description: "Szczegółowy przewodnik instalacji modyfikacji dla początkujących",
+                    addedDate: new Date().toISOString()
+                },
+                { 
+                    name: "Tworzenie własnych map", 
+                    link: "https://example.com/tutorial2",
+                    level: "Zaawansowany",
+                    description: "Naucz się tworzyć własne mapy do Gorilla Tag",
+                    addedDate: new Date(Date.now() - 259200000).toISOString() // 3 dni temu
+                }
+            ],
+            channels: [
+                { 
+                    name: "Gorilla Tag Oficjalny", 
+                    link: "https://youtube.com/gorillatag",
+                    subscribers: "1.2M",
+                    description: "Oficjalny kanał gry Gorilla Tag",
+                    addedDate: new Date().toISOString()
+                },
+                { 
+                    name: "Monke Mods", 
+                    link: "https://youtube.com/monkemods",
+                    subscribers: "350K",
+                    description: "Kanał poświęcony modyfikacjom do Gorilla Tag",
+                    addedDate: new Date(Date.now() - 345600000).toISOString() // 4 dni temu
+                }
+            ],
+            activity: [
+                {
+                    type: "mod",
+                    action: "added",
+                    itemName: "Monke Mod Manager",
+                    date: new Date().toISOString(),
+                    user: "Kornol"
+                },
+                {
+                    type: "video",
+                    action: "added",
+                    itemName: "Jak zainstalować mody",
+                    date: new Date(Date.now() - 3600000).toISOString(), // 1 godzina temu
+                    user: "Kornol"
+                }
+            ]
+        };
+
+        // Zmienne stanu
+        let isLoggedIn = false;
+        let currentUser = null;
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        let autoLogin = localStorage.getItem('autoLogin') === 'true';
+        let animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+
+        // Elementy DOM
+        const authSection = document.getElementById('authSection');
+        const userSection = document.getElementById('userSection');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const mainContent = document.getElementById('mainContent');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const submitLogin = document.getElementById('submitLogin');
+        const submitRegister = document.getElementById('submitRegister');
+        const submitChangePassword = document.getElementById('submitChangePassword');
+        const cancelChangePassword = document.getElementById('cancelChangePassword');
+        const loginUsername = document.getElementById('loginUsername');
+        const loginPassword = document.getElementById('loginPassword');
+        const registerUsername = document.getElementById('registerUsername');
+        const registerPassword = document.getElementById('registerPassword');
+        const registerConfirmPassword = document.getElementById('registerConfirmPassword');
+        const currentPassword = document.getElementById('currentPassword');
+        const newPassword = document.getElementById('newPassword');
+        const confirmNewPassword = document.getElementById('confirmNewPassword');
+        const loginError = document.getElementById('loginError');
+        const registerError = document.getElementById('registerError');
+        const changePasswordError = document.getElementById('changePasswordError');
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        const userAvatar = document.getElementById('userAvatar');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const sidebarBtns = document.querySelectorAll('.sidebar-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const serverNameDisplay = document.getElementById('serverNameDisplay');
+        const welcomeServerName = document.getElementById('welcomeServerName');
+        const serverNameSettingsDisplay = document.getElementById('serverNameSettingsDisplay');
+        const serverNameInput = document.getElementById('serverNameInput');
+        const editServerNameBtn = document.getElementById('editServerNameBtn');
+        const saveServerNameBtn = document.getElementById('saveServerNameBtn');
+        const cancelEditServerNameBtn = document.getElementById('cancelEditServerNameBtn');
+        const serverSettingsCard = document.getElementById('serverSettingsCard');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const autoLoginToggle = document.getElementById('autoLoginToggle');
+        const autoLoginCheckbox = document.getElementById('autoLoginCheckbox');
+        const changePasswordSettingsBtn = document.getElementById('changePasswordSettingsBtn');
+        const settingsUsernameDisplay = document.getElementById('settingsUsernameDisplay');
+        const registrationDate = document.getElementById('registrationDate');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const animationsToggle = document.getElementById('animationsToggle');
+        const totalMods = document.getElementById('totalMods');
+        const totalVideos = document.getElementById('totalVideos');
+        const totalTutorials = document.getElementById('totalTutorials');
+        const totalChannels = document.getElementById('totalChannels');
+        const recentActivity = document.getElementById('recentActivity');
+
+        // Elementy administracyjne
+        const modsAdminControls = document.getElementById('modsAdminControls');
+        const videosAdminControls = document.getElementById('videosAdminControls');
+        const tutorialsAdminControls = document.getElementById('tutorialsAdminControls');
+        const channelsAdminControls = document.getElementById('channelsAdminControls');
+
+        // Formularze dodawania
+        const addModBtn = document.getElementById('addModBtn');
+        const addModForm = document.getElementById('addModForm');
+        const addVideoBtn = document.getElementById('addVideoBtn');
+        const addVideoForm = document.getElementById('addVideoForm');
+        const addTutorialBtn = document.getElementById('addTutorialBtn');
+        const addTutorialForm = document.getElementById('addTutorialForm');
+        const addChannelBtn = document.getElementById('addChannelBtn');
+        const addChannelForm = document.getElementById('addChannelForm');
+
+        // Listy
+        const modsList = document.getElementById('modsList');
+        const videosList = document.getElementById('videosList');
+        const tutorialsList = document.getElementById('tutorialsList');
+        const channelsList = document.getElementById('channelsList');
+
+        // Funkcje pomocnicze
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pl-PL', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return interval + " rok temu";
+            
+            interval = Math.floor(seconds / 2592000);
+            if (interval >= 1) return interval + " miesięcy temu";
+            
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return interval + " dni temu";
+            
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return interval + " godzin temu";
+            
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return interval + " minut temu";
+            
+            return "przed chwilą";
+        }
+
+        // Funkcja do zmiany tytułu strony
+        function changePageTitle(newTitle) {
+            document.title = newTitle;
+            serverNameDisplay.textContent = newTitle;
+            welcomeServerName.textContent = `Witaj w ${newTitle}!`;
+            serverNameSettingsDisplay.textContent = newTitle;
+            data.serverName = newTitle;
+            saveData();
+            
+            // Dodaj aktywność
+            data.activity.unshift({
+                type: "server",
+                action: "renamed",
+                itemName: newTitle,
+                date: new Date().toISOString(),
+                user: currentUser
+            });
+            
+            saveData();
+            renderActivity();
+        }
+
+        // Inicjalizacja
+        function init() {
+            // Inicjalizacja particles.js
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#4285f4"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4285f4",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+
+            // Ustawienia wyglądu
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeBtn.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+                darkModeToggle.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                darkModeBtn.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+                darkModeToggle.checked = false;
+            }
+            
+            // Ustawienia automatycznego logowania
+            autoLoginToggle.checked = autoLogin;
+            autoLoginCheckbox.checked = autoLogin;
+            
+            // Ustawienia animacji
+            animationsToggle.checked = animationsEnabled;
+            
+            // Ustawienia nazwy serwera
+            updateServerNameDisplay();
+            
+            // Sprawdź automatyczne logowanie
+            if (autoLogin && localStorage.getItem('lastLoggedInUser')) {
+                const lastUser = localStorage.getItem('lastLoggedInUser');
+                const user = users.find(u => u.username === lastUser);
+                if (user) {
+                    loginSuccess(user.username);
+                }
+            }
+            
+            // Jeśli to Kornol, dodaj możliwość zmiany tytułu strony
+            if (currentUser === "Kornol") {
+                const titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.value = data.serverName;
+                titleInput.style.position = 'fixed';
+                titleInput.style.top = '10px';
+                titleInput.style.left = '10px';
+                titleInput.style.zIndex = '1000';
+                titleInput.style.padding = '5px';
+                titleInput.style.borderRadius = '5px';
+                titleInput.style.border = '1px solid var(--primary-color)';
+                titleInput.style.backgroundColor = 'var(--card-bg-light)';
+                titleInput.style.color = 'inherit';
+                
+                const saveBtn = document.createElement('button');
+                saveBtn.textContent = 'Zapisz tytuł';
+                saveBtn.style.position = 'fixed';
+                saveBtn.style.top = '10px';
+                saveBtn.style.left = '220px';
+                saveBtn.style.zIndex = '1000';
+                saveBtn.style.padding = '5px 10px';
+                saveBtn.style.borderRadius = '5px';
+                saveBtn.style.border = 'none';
+                saveBtn.style.backgroundColor = 'var(--primary-color)';
+                saveBtn.style.color = 'white';
+                saveBtn.style.cursor = 'pointer';
+                
+                saveBtn.addEventListener('click', () => {
+                    changePageTitle(titleInput.value);
+                });
+                
+                document.body.appendChild(titleInput);
+                document.body.appendChild(saveBtn);
+                
+                if (darkMode) {
+                    titleInput.style.backgroundColor = 'var(--card-bg-dark)';
+                }
+            }
+            
+            // Renderuj dane
+            renderMods();
+            renderVideos();
+            renderTutorials();
+            renderChannels();
+            renderStats();
+            renderActivity();
+        }
+
+        // Zapisz dane do localStorage
+        function saveData() {
+            localStorage.setItem('gorillaTagData', JSON.stringify(data));
+            localStorage.setItem('gorillaTagUsers', JSON.stringify(users));
+        }
+
+        // Aktualizacja wyświetlanej nazwy serwera
+        function updateServerNameDisplay() {
+            serverNameDisplay.textContent = data.serverName;
+            welcomeServerName.textContent = `Witaj w ${data.serverName}!`;
+            serverNameSettingsDisplay.textContent = data.serverName;
+            serverNameInput.value = data.serverName;
+        }
+
+        // Renderowanie list
+        function renderMods() {
+            modsList.innerHTML = '';
+            data.mods.forEach((mod, index) => {
+                const modElement = document.createElement('div');
+                modElement.className = 'item-card';
+                modElement.innerHTML = `
+                    <h3>${mod.name} ${mod.version ? `<span style="font-size: 0.8em; color: #666;">v${mod.version}</span>` : ''}</h3>
+                    <p>${mod.description || ''}</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(mod.addedDate)}
+                    </p>
+                    ${mod.link ? `<a href="${mod.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                        <i class="fas fa-download"></i> Pobierz
+                    </a>` : ''}
+                    ${currentUser === "Kornol" ? `
+                    <div class="item-card-actions">
+                        <button class="btn btn-outline edit-btn" data-index="${index}">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>` : ''}
+                `;
+                modsList.appendChild(modElement);
+            });
+
+            if (currentUser === "Kornol") {
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        editMod(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        deleteMod(index);
+                    });
+                });
+            }
+        }
+
+        function renderVideos() {
+            videosList.innerHTML = '';
+            data.videos.forEach((video, index) => {
+                const videoElement = document.createElement('div');
+                videoElement.className = 'item-card';
+                videoElement.innerHTML = `
+                    <h3>${video.name}</h3>
+                    ${video.author ? `<p><i class="fas fa-user"></i> Autor: ${video.author}</p>` : ''}
+                    <p>${video.description || ''}</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(video.addedDate)}
+                    </p>
+                    ${video.link ? `<a href="${video.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                        <i class="fas fa-play"></i> Obejrzyj
+                    </a>` : ''}
+                    ${currentUser === "Kornol" ? `
+                    <div class="item-card-actions">
+                        <button class="btn btn-outline edit-btn" data-index="${index}">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>` : ''}
+                `;
+                videosList.appendChild(videoElement);
+            });
+
+            if (currentUser === "Kornol") {
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        editVideo(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        deleteVideo(index);
+                    });
+                });
+            }
+        }
+
+        function renderTutorials() {
+            tutorialsList.innerHTML = '';
+            data.tutorials.forEach((tutorial, index) => {
+                const tutorialElement = document.createElement('div');
+                tutorialElement.className = 'item-card';
+                tutorialElement.innerHTML = `
+                    <h3>${tutorial.name}</h3>
+                    ${tutorial.level ? `<p><i class="fas fa-signal"></i> Poziom: ${tutorial.level}</p>` : ''}
+                    <p>${tutorial.description || ''}</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(tutorial.addedDate)}
+                    </p>
+                    ${tutorial.link ? `<a href="${tutorial.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                        <i class="fas fa-book-open"></i> Zobacz
+                    </a>` : ''}
+                    ${currentUser === "Kornol" ? `
+                    <div class="item-card-actions">
+                        <button class="btn btn-outline edit-btn" data-index="${index}">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>` : ''}
+                `;
+                tutorialsList.appendChild(tutorialElement);
+            });
+
+            if (currentUser === "Kornol") {
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        editTutorial(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        deleteTutorial(index);
+                    });
+                });
+            }
+        }
+
+        function renderChannels() {
+            channelsList.innerHTML = '';
+            data.channels.forEach((channel, index) => {
+                const channelElement = document.createElement('div');
+                channelElement.className = 'item-card';
+                channelElement.innerHTML = `
+                    <h3>${channel.name}</h3>
+                    ${channel.subscribers ? `<p><i class="fas fa-users"></i> Subskrybenci: ${channel.subscribers}</p>` : ''}
+                    <p>${channel.description || ''}</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(channel.addedDate)}
+                    </p>
+                    ${channel.link ? `<a href="${channel.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                        <i class="fas fa-external-link-alt"></i> Odwiedź
+                    </a>` : ''}
+                    ${currentUser === "Kornol" ? `
+                    <div class="item-card-actions">
+                        <button class="btn btn-outline edit-btn" data-index="${index}">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i> Usuń
+                        </button>
+                    </div>` : ''}
+                `;
+                channelsList.appendChild(channelElement);
+            });
+
+            if (currentUser === "Kornol") {
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        editChannel(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        deleteChannel(index);
+                    });
+                });
+            }
+        }
+
+        function renderStats() {
+            totalMods.textContent = data.mods.length;
+            totalVideos.textContent = data.videos.length;
+            totalTutorials.textContent = data.tutorials.length;
+            totalChannels.textContent = data.channels.length;
+        }
+
+        function renderActivity() {
+            recentActivity.innerHTML = '';
+            
+            // Sortuj aktywność od najnowszej
+            const sortedActivity = [...data.activity].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedActivity.forEach(activity => {
+                const activityElement = document.createElement('div');
+                activityElement.className = 'settings-option';
+                
+                let icon = '';
+                let actionText = '';
+                
+                switch(activity.type) {
+                    case 'mod':
+                        icon = '<i class="fas fa-puzzle-piece"></i>';
+                        break;
+                    case 'video':
+                        icon = '<i class="fas fa-video"></i>';
+                        break;
+                    case 'tutorial':
+                        icon = '<i class="fas fa-graduation-cap"></i>';
+                        break;
+                    case 'channel':
+                        icon = '<i class="fas fa-users"></i>';
+                        break;
+                    case 'server':
+                        icon = '<i class="fas fa-server"></i>';
+                        break;
+                }
+                
+                switch(activity.action) {
+                    case 'added':
+                        actionText = 'dodał(a)';
+                        break;
+                    case 'edited':
+                        actionText = 'edytował(a)';
+                        break;
+                    case 'deleted':
+                        actionText = 'usunął(ęła)';
+                        break;
+                    case 'renamed':
+                        actionText = 'zmienił(a) nazwę';
+                        break;
+                }
+                
+                activityElement.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px; color: var(--primary-color);">${icon}</span>
+                        <div>
+                            <strong>${activity.user}</strong> ${actionText} ${activity.type}: 
+                            <strong>${activity.itemName}</strong>
+                            <div style="font-size: 0.8em; color: #666;">${timeAgo(activity.date)}</div>
+                        </div>
+                    </div>
+                `;
+                
+                recentActivity.appendChild(activityElement);
+            });
+        }
+
+        // Funkcje usuwania
+        function deleteMod(index) {
+            if (confirm('Czy na pewno chcesz usunąć ten mod?')) {
+                const deletedMod = data.mods.splice(index, 1)[0];
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "mod",
+                    action: "deleted",
+                    itemName: deletedMod.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                saveData();
+                renderMods();
+                renderStats();
+                renderActivity();
+            }
+        }
+
+        function deleteVideo(index) {
+            if (confirm('Czy na pewno chcesz usunąć ten film?')) {
+                const deletedVideo = data.videos.splice(index, 1)[0];
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "video",
+                    action: "deleted",
+                    itemName: deletedVideo.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                saveData();
+                renderVideos();
+                renderStats();
+                renderActivity();
+            }
+        }
+
+        function deleteTutorial(index) {
+            if (confirm('Czy na pewno chcesz usunąć ten tutorial?')) {
+                const deletedTutorial = data.tutorials.splice(index, 1)[0];
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "tutorial",
+                    action: "deleted",
+                    itemName: deletedTutorial.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                saveData();
+                renderTutorials();
+                renderStats();
+                renderActivity();
+            }
+        }
+
+        function deleteChannel(index) {
+            if (confirm('Czy na pewno chcesz usunąć ten kanał?')) {
+                const deletedChannel = data.channels.splice(index, 1)[0];
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "channel",
+                    action: "deleted",
+                    itemName: deletedChannel.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                saveData();
+                renderChannels();
+                renderStats();
+                renderActivity();
+            }
+        }
+
+        // Funkcje edycji
+        function editMod(index) {
+            const mod = data.mods[index];
+            document.getElementById('modName').value = mod.name || '';
+            document.getElementById('modLink').value = mod.link || '';
+            document.getElementById('modVersion').value = mod.version || '';
+            document.getElementById('modDescription').value = mod.description || '';
+            addModForm.classList.remove('hidden');
+            
+            const submitBtn = document.getElementById('submitMod');
+            submitBtn.textContent = 'Zapisz zmiany';
+            submitBtn.onclick = function() {
+                const oldName = data.mods[index].name;
+                data.mods[index] = {
+                    name: document.getElementById('modName').value,
+                    link: document.getElementById('modLink').value,
+                    version: document.getElementById('modVersion').value,
+                    description: document.getElementById('modDescription').value,
+                    addedDate: mod.addedDate
+                };
+                
+                // Dodaj aktywność jeśli nazwa się zmieniła
+                if (oldName !== data.mods[index].name) {
+                    data.activity.unshift({
+                        type: "mod",
+                        action: "edited",
+                        itemName: data.mods[index].name,
+                        date: new Date().toISOString(),
+                        user: currentUser
+                    });
+                }
+                
+                addModForm.classList.add('hidden');
+                saveData();
+                renderMods();
+                renderActivity();
+            };
+        }
+
+        function editVideo(index) {
+            const video = data.videos[index];
+            document.getElementById('videoName').value = video.name || '';
+            document.getElementById('videoLink').value = video.link || '';
+            document.getElementById('videoAuthor').value = video.author || '';
+            document.getElementById('videoDescription').value = video.description || '';
+            addVideoForm.classList.remove('hidden');
+            
+            const submitBtn = document.getElementById('submitVideo');
+            submitBtn.textContent = 'Zapisz zmiany';
+            submitBtn.onclick = function() {
+                const oldName = data.videos[index].name;
+                data.videos[index] = {
+                    name: document.getElementById('videoName').value,
+                    link: document.getElementById('videoLink').value,
+                    author: document.getElementById('videoAuthor').value,
+                    description: document.getElementById('videoDescription').value,
+                    addedDate: video.addedDate
+                };
+                
+                // Dodaj aktywność jeśli nazwa się zmieniła
+                if (oldName !== data.videos[index].name) {
+                    data.activity.unshift({
+                        type: "video",
+                        action: "edited",
+                        itemName: data.videos[index].name,
+                        date: new Date().toISOString(),
+                        user: currentUser
+                    });
+                }
+                
+                addVideoForm.classList.add('hidden');
+                saveData();
+                renderVideos();
+                renderActivity();
+            };
+        }
+
+        function editTutorial(index) {
+            const tutorial = data.tutorials[index];
+            document.getElementById('tutorialName').value = tutorial.name || '';
+            document.getElementById('tutorialLink').value = tutorial.link || '';
+            document.getElementById('tutorialLevel').value = tutorial.level || '';
+            document.getElementById('tutorialDescription').value = tutorial.description || '';
+            addTutorialForm.classList.remove('hidden');
+            
+            const submitBtn = document.getElementById('submitTutorial');
+            submitBtn.textContent = 'Zapisz zmiany';
+            submitBtn.onclick = function() {
+                const oldName = data.tutorials[index].name;
+                data.tutorials[index] = {
+                    name: document.getElementById('tutorialName').value,
+                    link: document.getElementById('tutorialLink').value,
+                    level: document.getElementById('tutorialLevel').value,
+                    description: document.getElementById('tutorialDescription').value,
+                    addedDate: tutorial.addedDate
+                };
+                
+                // Dodaj aktywność jeśli nazwa się zmieniła
+                if (oldName !== data.tutorials[index].name) {
+                    data.activity.unshift({
+                        type: "tutorial",
+                        action: "edited",
+                        itemName: data.tutorials[index].name,
+                        date: new Date().toISOString(),
+                        user: currentUser
+                    });
+                }
+                
+                addTutorialForm.classList.add('hidden');
+                saveData();
+                renderTutorials();
+                renderActivity();
+            };
+        }
+
+        function editChannel(index) {
+            const channel = data.channels[index];
+            document.getElementById('channelName').value = channel.name || '';
+            document.getElementById('channelLink').value = channel.link || '';
+            document.getElementById('channelSubscribers').value = channel.subscribers || '';
+            document.getElementById('channelDescription').value = channel.description || '';
+            addChannelForm.classList.remove('hidden');
+            
+            const submitBtn = document.getElementById('submitChannel');
+            submitBtn.textContent = 'Zapisz zmiany';
+            submitBtn.onclick = function() {
+                const oldName = data.channels[index].name;
+                data.channels[index] = {
+                    name: document.getElementById('channelName').value,
+                    link: document.getElementById('channelLink').value,
+                    subscribers: document.getElementById('channelSubscribers').value,
+                    description: document.getElementById('channelDescription').value,
+                    addedDate: channel.addedDate
+                };
+                
+                // Dodaj aktywność jeśli nazwa się zmieniła
+                if (oldName !== data.channels[index].name) {
+                    data.activity.unshift({
+                        type: "channel",
+                        action: "edited",
+                        itemName: data.channels[index].name,
+                        date: new Date().toISOString(),
+                        user: currentUser
+                    });
+                }
+                
+                addChannelForm.classList.add('hidden');
+                saveData();
+                renderChannels();
+                renderActivity();
+            };
+        }
+
+        // Logika logowania/rejestracji
+        showLoginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            registerModal.classList.add('hidden');
+        });
+
+        showRegisterBtn.addEventListener('click', () => {
+            registerModal.classList.remove('hidden');
+            loginModal.classList.add('hidden');
+        });
+
+        switchToRegister.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            registerModal.classList.remove('hidden');
+            loginError.textContent = '';
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            loginModal.classList.remove('hidden');
+            registerError.textContent = '';
+        });
+
+        submitLogin.addEventListener('click', () => {
+            const username = loginUsername.value;
+            const password = loginPassword.value;
+            const autoLoginChecked = autoLoginCheckbox.checked;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Zapisz preferencję automatycznego logowania
+                const userIndex = users.findIndex(u => u.username === username);
+                users[userIndex].autoLogin = autoLoginChecked;
+                users[userIndex].lastLogin = new Date().toISOString();
+                localStorage.setItem('gorillaTagUsers', JSON.stringify(users));
+                
+                // Zapisz ustawienie globalne
+                autoLogin = autoLoginChecked;
+                localStorage.setItem('autoLogin', autoLoginChecked);
+                
+                if (autoLoginChecked) {
+                    localStorage.setItem('lastLoggedInUser', username);
+                } else {
+                    localStorage.removeItem('lastLoggedInUser');
+                }
+                
+                loginSuccess(username);
+            } else {
+                loginError.textContent = 'Nieprawidłowa nazwa użytkownika lub hasło';
+            }
+        });
+
+        submitRegister.addEventListener('click', () => {
+            const username = registerUsername.value;
+            const password = registerPassword.value;
+            const confirmPassword = registerConfirmPassword.value;
+
+            // Walidacja
+            if (!username || !password || !confirmPassword) {
+                registerError.textContent = 'Wszystkie pola są wymagane';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                registerError.textContent = 'Hasła nie są identyczne';
+                return;
+            }
+
+            if (users.some(u => u.username === username)) {
+                registerError.textContent = 'Nazwa użytkownika jest już zajęta';
+                return;
+            }
+
+            // Rejestracja
+            const newUser = {
+                username,
+                password,
+                autoLogin: false,
+                registrationDate: new Date().toISOString(),
+                lastLogin: null
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('gorillaTagUsers', JSON.stringify(users));
+            registerError.textContent = '';
+            registerUsername.value = '';
+            registerPassword.value = '';
+            registerConfirmPassword.value = '';
+            
+            // Automatyczne logowanie po rejestracji
+            loginSuccess(username);
+        });
+
+        // Zmiana hasła
+        changePasswordBtn.addEventListener('click', () => {
+            changePasswordModal.classList.remove('hidden');
+        });
+
+        changePasswordSettingsBtn.addEventListener('click', () => {
+            changePasswordModal.classList.remove('hidden');
+        });
+
+        cancelChangePassword.addEventListener('click', () => {
+            changePasswordModal.classList.add('hidden');
+            changePasswordError.textContent = '';
+        });
+
+        submitChangePassword.addEventListener('click', () => {
+            const currentPass = currentPassword.value;
+            const newPass = newPassword.value;
+            const confirmNewPass = confirmNewPassword.value;
+
+            // Walidacja
+            if (!currentPass || !newPass || !confirmNewPass) {
+                changePasswordError.textContent = 'Wszystkie pola są wymagane';
+                return;
+            }
+
+            if (newPass !== confirmNewPass) {
+                changePasswordError.textContent = 'Nowe hasła nie są identyczne';
+                return;
+            }
+
+            const userIndex = users.findIndex(u => u.username === currentUser);
+            if (users[userIndex].password !== currentPass) {
+                changePasswordError.textContent = 'Aktualne hasło jest nieprawidłowe';
+                return;
+            }
+
+            // Zmiana hasła
+            users[userIndex].password = newPass;
+            localStorage.setItem('gorillaTagUsers', JSON.stringify(users));
+            
+            changePasswordError.textContent = '';
+            currentPassword.value = '';
+            newPassword.value = '';
+            confirmNewPassword.value = '';
+            changePasswordModal.classList.add('hidden');
+            
+            alert('Hasło zostało zmienione pomyślnie!');
+        });
+
+        function loginSuccess(username) {
+            isLoggedIn = true;
+            currentUser = username;
+            authSection.classList.add('hidden');
+            userSection.classList.remove('hidden');
+            loginModal.classList.add('hidden');
+            registerModal.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            usernameDisplay.textContent = username;
+            userAvatar.textContent = username.charAt(0).toUpperCase();
+            loginError.textContent = '';
+            loginUsername.value = '';
+            loginPassword.value = '';
+            
+            // Ustawienia użytkownika
+            const user = users.find(u => u.username === username);
+            settingsUsernameDisplay.textContent = username;
+            registrationDate.textContent = formatDate(user.registrationDate);
+            
+            // Pokaż kontrolki administracyjne jeśli to Kornol
+            if (username === "Kornol") {
+                modsAdminControls.classList.remove('hidden');
+                videosAdminControls.classList.remove('hidden');
+                tutorialsAdminControls.classList.remove('hidden');
+                channelsAdminControls.classList.remove('hidden');
+                serverSettingsCard.classList.remove('hidden');
+                
+                // Dodaj możliwość zmiany tytułu strony
+                const titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.value = data.serverName;
+                titleInput.style.position = 'fixed';
+                titleInput.style.top = '10px';
+                titleInput.style.left = '10px';
+                titleInput.style.zIndex = '1000';
+                titleInput.style.padding = '5px';
+                titleInput.style.borderRadius = '5px';
+                titleInput.style.border = '1px solid var(--primary-color)';
+                titleInput.style.backgroundColor = darkMode ? 'var(--card-bg-dark)' : 'var(--card-bg-light)';
+                titleInput.style.color = 'inherit';
+                
+                const saveBtn = document.createElement('button');
+                saveBtn.textContent = 'Zapisz tytuł';
+                saveBtn.style.position = 'fixed';
+                saveBtn.style.top = '10px';
+                saveBtn.style.left = '220px';
+                saveBtn.style.zIndex = '1000';
+                saveBtn.style.padding = '5px 10px';
+                saveBtn.style.borderRadius = '5px';
+                saveBtn.style.border = 'none';
+                saveBtn.style.backgroundColor = 'var(--primary-color)';
+                saveBtn.style.color = 'white';
+                saveBtn.style.cursor = 'pointer';
+                
+                saveBtn.addEventListener('click', () => {
+                    changePageTitle(titleInput.value);
+                });
+                
+                document.body.appendChild(titleInput);
+                document.body.appendChild(saveBtn);
+            } else {
+                modsAdminControls.classList.add('hidden');
+                videosAdminControls.classList.add('hidden');
+                tutorialsAdminControls.classList.add('hidden');
+                channelsAdminControls.classList.add('hidden');
+                serverSettingsCard.classList.add('hidden');
+            }
+
+            // Odśwież dane
+            renderMods();
+            renderVideos();
+            renderTutorials();
+            renderChannels();
+            renderStats();
+            renderActivity();
+        }
+
+        logoutBtn.addEventListener('click', () => {
+            isLoggedIn = false;
+            currentUser = null;
+            authSection.classList.remove('hidden');
+            userSection.classList.add('hidden');
+            mainContent.classList.add('hidden');
+            modsAdminControls.classList.add('hidden');
+            videosAdminControls.classList.add('hidden');
+            tutorialsAdminControls.classList.add('hidden');
+            channelsAdminControls.classList.add('hidden');
+            serverSettingsCard.classList.add('hidden');
+            loginModal.classList.remove('hidden');
+            
+            // Usuń ostatniego zalogowanego użytkownika jeśli wyłączono auto-login
+            if (!autoLogin) {
+                localStorage.removeItem('lastLoggedInUser');
+            }
+            
+            // Usuń elementy do zmiany tytułu jeśli istnieją
+            const titleInput = document.querySelector('input[type="text"][style*="position: fixed"]');
+            const saveBtn = document.querySelector('button[style*="position: fixed"]');
+            if (titleInput) titleInput.remove();
+            if (saveBtn) saveBtn.remove();
+        });
+
+        // Dark mode
+        darkModeBtn.addEventListener('click', toggleDarkMode);
+        darkModeToggle.addEventListener('change', toggleDarkMode);
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeBtn.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+                darkModeToggle.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                darkModeBtn.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+                darkModeToggle.checked = false;
+            }
+            localStorage.setItem('darkMode', darkMode);
+            
+            // Aktualizuj tło inputu do zmiany tytułu
+            const titleInput = document.querySelector('input[type="text"][style*="position: fixed"]');
+            if (titleInput) {
+                titleInput.style.backgroundColor = darkMode ? 'var(--card-bg-dark)' : 'var(--card-bg-light)';
+            }
+        }
+
+        // Auto login
+        autoLoginToggle.addEventListener('change', function() {
+            autoLogin = this.checked;
+            localStorage.setItem('autoLogin', autoLogin);
+            
+            // Aktualizuj ustawienia użytkownika
+            if (currentUser) {
+                const userIndex = users.findIndex(u => u.username === currentUser);
+                if (userIndex !== -1) {
+                    users[userIndex].autoLogin = autoLogin;
+                    localStorage.setItem('gorillaTagUsers', JSON.stringify(users));
+                }
+            }
+            
+            if (autoLogin && currentUser) {
+                localStorage.setItem('lastLoggedInUser', currentUser);
+            } else {
+                localStorage.removeItem('lastLoggedInUser');
+            }
+        });
+
+        // Animations toggle
+        animationsToggle.addEventListener('change', function() {
+            animationsEnabled = this.checked;
+            localStorage.setItem('animationsEnabled', animationsEnabled);
+            
+            if (animationsEnabled) {
+                document.body.style.transition = 'var(--transition)';
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.transition = 'var(--transition)';
+                });
+            } else {
+                document.body.style.transition = 'none';
+                document.querySelectorAll('*').forEach(el => {
+                    el.style.transition = 'none';
+                });
+            }
+        });
+
+        // Edycja nazwy serwera
+        editServerNameBtn.addEventListener('click', function() {
+            serverNameSettingsDisplay.classList.add('hidden');
+            serverNameInput.classList.remove('hidden');
+            editServerNameBtn.classList.add('hidden');
+            saveServerNameBtn.classList.remove('hidden');
+            cancelEditServerNameBtn.classList.remove('hidden');
+        });
+
+        saveServerNameBtn.addEventListener('click', function() {
+            const newName = serverNameInput.value.trim();
+            if (newName) {
+                changePageTitle(newName);
+                
+                serverNameSettingsDisplay.classList.remove('hidden');
+                serverNameInput.classList.add('hidden');
+                editServerNameBtn.classList.remove('hidden');
+                saveServerNameBtn.classList.add('hidden');
+                cancelEditServerNameBtn.classList.add('hidden');
+            }
+        });
+
+        cancelEditServerNameBtn.addEventListener('click', function() {
+            serverNameSettingsDisplay.classList.remove('hidden');
+            serverNameInput.classList.add('hidden');
+            editServerNameBtn.classList.remove('hidden');
+            saveServerNameBtn.classList.add('hidden');
+            cancelEditServerNameBtn.classList.add('hidden');
+            serverNameInput.value = data.serverName;
+        });
+
+        // Nawigacja
+        sidebarBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.getAttribute('data-tab');
+                
+                // Usuń aktywną klasę ze wszystkich przycisków
+                sidebarBtns.forEach(b => b.classList.remove('active'));
+                // Dodaj aktywną klasę do klikniętego przycisku
+                btn.classList.add('active');
+                
+                // Ukryj wszystkie zakładki
+                tabContents.forEach(content => content.classList.remove('active'));
+                // Pokaż odpowiednią zakładkę
+                document.getElementById(`${tab}Tab`).classList.add('active');
+                
+                // Zamknij menu na mobile
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+
+        // Menu toggle
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Dodawanie nowych elementów
+        addModBtn.addEventListener('click', () => {
+            addModForm.classList.remove('hidden');
+            document.getElementById('modName').value = '';
+            document.getElementById('modLink').value = '';
+            document.getElementById('modVersion').value = '';
+            document.getElementById('modDescription').value = '';
+            
+            const submitBtn = document.getElementById('submitMod');
+            submitBtn.textContent = 'Dodaj';
+            submitBtn.onclick = function() {
+                const newMod = {
+                    name: document.getElementById('modName').value,
+                    link: document.getElementById('modLink').value,
+                    version: document.getElementById('modVersion').value,
+                    description: document.getElementById('modDescription').value,
+                    addedDate: new Date().toISOString()
+                };
+                
+                data.mods.push(newMod);
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "mod",
+                    action: "added",
+                    itemName: newMod.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                addModForm.classList.add('hidden');
+                saveData();
+                renderMods();
+                renderStats();
+                renderActivity();
+            };
+        });
+
+        document.getElementById('cancelMod').addEventListener('click', () => {
+            addModForm.classList.add('hidden');
+        });
+
+        addVideoBtn.addEventListener('click', () => {
+            addVideoForm.classList.remove('hidden');
+            document.getElementById('videoName').value = '';
+            document.getElementById('videoLink').value = '';
+            document.getElementById('videoAuthor').value = '';
+            document.getElementById('videoDescription').value = '';
+            
+            const submitBtn = document.getElementById('submitVideo');
+            submitBtn.textContent = 'Dodaj';
+            submitBtn.onclick = function() {
+                const newVideo = {
+                    name: document.getElementById('videoName').value,
+                    link: document.getElementById('videoLink').value,
+                    author: document.getElementById('videoAuthor').value,
+                    description: document.getElementById('videoDescription').value,
+                    addedDate: new Date().toISOString()
+                };
+                
+                data.videos.push(newVideo);
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "video",
+                    action: "added",
+                    itemName: newVideo.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                addVideoForm.classList.add('hidden');
+                saveData();
+                renderVideos();
+                renderStats();
+                renderActivity();
+            };
+        });
+
+        document.getElementById('cancelVideo').addEventListener('click', () => {
+            addVideoForm.classList.add('hidden');
+        });
+
+        addTutorialBtn.addEventListener('click', () => {
+            addTutorialForm.classList.remove('hidden');
+            document.getElementById('tutorialName').value = '';
+            document.getElementById('tutorialLink').value = '';
+            document.getElementById('tutorialLevel').value = '';
+            document.getElementById('tutorialDescription').value = '';
+            
+            const submitBtn = document.getElementById('submitTutorial');
+            submitBtn.textContent = 'Dodaj';
+            submitBtn.onclick = function() {
+                const newTutorial = {
+                    name: document.getElementById('tutorialName').value,
+                    link: document.getElementById('tutorialLink').value,
+                    level: document.getElementById('tutorialLevel').value,
+                    description: document.getElementById('tutorialDescription').value,
+                    addedDate: new Date().toISOString()
+                };
+                
+                data.tutorials.push(newTutorial);
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "tutorial",
+                    action: "added",
+                    itemName: newTutorial.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                addTutorialForm.classList.add('hidden');
+                saveData();
+                renderTutorials();
+                renderStats();
+                renderActivity();
+            };
+        });
+
+        document.getElementById('cancelTutorial').addEventListener('click', () => {
+            addTutorialForm.classList.add('hidden');
+        });
+
+        addChannelBtn.addEventListener('click', () => {
+            addChannelForm.classList.remove('hidden');
+            document.getElementById('channelName').value = '';
+            document.getElementById('channelLink').value = '';
+            document.getElementById('channelSubscribers').value = '';
+            document.getElementById('channelDescription').value = '';
+            
+            const submitBtn = document.getElementById('submitChannel');
+            submitBtn.textContent = 'Dodaj';
+            submitBtn.onclick = function() {
+                const newChannel = {
+                    name: document.getElementById('channelName').value,
+                    link: document.getElementById('channelLink').value,
+                    subscribers: document.getElementById('channelSubscribers').value,
+                    description: document.getElementById('channelDescription').value,
+                    addedDate: new Date().toISOString()
+                };
+                
+                data.channels.push(newChannel);
+                
+                // Dodaj aktywność
+                data.activity.unshift({
+                    type: "channel",
+                    action: "added",
+                    itemName: newChannel.name,
+                    date: new Date().toISOString(),
+                    user: currentUser
+                });
+                
+                addChannelForm.classList.add('hidden');
+                saveData();
+                renderChannels();
+                renderStats();
+                renderActivity();
+            };
+        });
+
+        document.getElementById('cancelChannel').addEventListener('click', () => {
+            addChannelForm.classList.add('hidden');
+        });
+
+        // Wyszukiwanie
+        document.getElementById('searchModsBtn').addEventListener('click', searchMods);
+        document.getElementById('modsSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchMods();
+        });
+
+        document.getElementById('searchVideosBtn').addEventListener('click', searchVideos);
+        document.getElementById('videosSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchVideos();
+        });
+
+        document.getElementById('searchTutorialsBtn').addEventListener('click', searchTutorials);
+        document.getElementById('tutorialsSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchTutorials();
+        });
+
+        document.getElementById('searchChannelsBtn').addEventListener('click', searchChannels);
+        document.getElementById('channelsSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchChannels();
+        });
+
+        function searchMods() {
+            const query = document.getElementById('modsSearch').value.toLowerCase();
+            const filteredMods = data.mods.filter(mod => 
+                mod.name.toLowerCase().includes(query) || 
+                (mod.description && mod.description.toLowerCase().includes(query)) ||
+                (mod.version && mod.version.toLowerCase().includes(query))
+            );
+            
+            renderFilteredItems(modsList, filteredMods, 'mod');
+        }
+
+        function searchVideos() {
+            const query = document.getElementById('videosSearch').value.toLowerCase();
+            const filteredVideos = data.videos.filter(video => 
+                video.name.toLowerCase().includes(query) || 
+                (video.description && video.description.toLowerCase().includes(query)) ||
+                (video.author && video.author.toLowerCase().includes(query))
+            );
+            
+            renderFilteredItems(videosList, filteredVideos, 'video');
+        }
+
+        function searchTutorials() {
+            const query = document.getElementById('tutorialsSearch').value.toLowerCase();
+            const filteredTutorials = data.tutorials.filter(tutorial => 
+                tutorial.name.toLowerCase().includes(query) || 
+                (tutorial.description && tutorial.description.toLowerCase().includes(query)) ||
+                (tutorial.level && tutorial.level.toLowerCase().includes(query))
+            );
+            
+            renderFilteredItems(tutorialsList, filteredTutorials, 'tutorial');
+        }
+
+        function searchChannels() {
+            const query = document.getElementById('channelsSearch').value.toLowerCase();
+            const filteredChannels = data.channels.filter(channel => 
+                channel.name.toLowerCase().includes(query) || 
+                (channel.description && channel.description.toLowerCase().includes(query)) ||
+                (channel.subscribers && channel.subscribers.toLowerCase().includes(query))
+            );
+            
+            renderFilteredItems(channelsList, filteredChannels, 'channel');
+        }
+
+        function renderFilteredItems(listElement, items, type) {
+            listElement.innerHTML = '';
+            
+            if (items.length === 0) {
+                listElement.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Nie znaleziono wyników</p>';
+                return;
+            }
+            
+            items.forEach((item, index) => {
+                const element = document.createElement('div');
+                element.className = 'item-card';
+                
+                let html = '';
+                let editDeleteButtons = '';
+                
+                if (currentUser === "Kornol") {
+                    editDeleteButtons = `
+                        <div class="item-card-actions">
+                            <button class="btn btn-outline edit-btn" data-index="${data[type + 's'].findIndex(i => i.name === item.name)}">
+                                <i class="fas fa-edit"></i> Edytuj
+                            </button>
+                            <button class="btn btn-danger delete-btn" data-index="${data[type + 's'].findIndex(i => i.name === item.name)}">
+                                <i class="fas fa-trash"></i> Usuń
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                switch(type) {
+                    case 'mod':
+                        html = `
+                            <h3>${item.name} ${item.version ? `<span style="font-size: 0.8em; color: #666;">v${item.version}</span>` : ''}</h3>
+                            <p>${item.description || ''}</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                                <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(item.addedDate)}
+                            </p>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                                <i class="fas fa-download"></i> Pobierz
+                            </a>` : ''}
+                            ${editDeleteButtons}
+                        `;
+                        break;
+                    case 'video':
+                        html = `
+                            <h3>${item.name}</h3>
+                            ${item.author ? `<p><i class="fas fa-user"></i> Autor: ${item.author}</p>` : ''}
+                            <p>${item.description || ''}</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                                <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(item.addedDate)}
+                            </p>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                                <i class="fas fa-play"></i> Obejrzyj
+                            </a>` : ''}
+                            ${editDeleteButtons}
+                        `;
+                        break;
+                    case 'tutorial':
+                        html = `
+                            <h3>${item.name}</h3>
+                            ${item.level ? `<p><i class="fas fa-signal"></i> Poziom: ${item.level}</p>` : ''}
+                            <p>${item.description || ''}</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                                <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(item.addedDate)}
+                            </p>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                                <i class="fas fa-book-open"></i> Zobacz
+                            </a>` : ''}
+                            ${editDeleteButtons}
+                        `;
+                        break;
+                    case 'channel':
+                        html = `
+                            <h3>${item.name}</h3>
+                            ${item.subscribers ? `<p><i class="fas fa-users"></i> Subskrybenci: ${item.subscribers}</p>` : ''}
+                            <p>${item.description || ''}</p>
+                            <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                                <i class="fas fa-calendar-alt"></i> Dodano: ${formatDate(item.addedDate)}
+                            </p>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-primary btn-small" style="margin-top: 10px;">
+                                <i class="fas fa-external-link-alt"></i> Odwiedź
+                            </a>` : ''}
+                            ${editDeleteButtons}
+                        `;
+                        break;
+                }
+                
+                element.innerHTML = html;
+                listElement.appendChild(element);
+            });
+            
+            // Ponownie dodaj event listeners do przycisków edycji/usuwania
+            if (currentUser === "Kornol") {
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        switch(type) {
+                            case 'mod': editMod(index); break;
+                            case 'video': editVideo(index); break;
+                            case 'tutorial': editTutorial(index); break;
+                            case 'channel': editChannel(index); break;
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        switch(type) {
+                            case 'mod': deleteMod(index); break;
+                            case 'video': deleteVideo(index); break;
+                            case 'tutorial': deleteTutorial(index); break;
+                            case 'channel': deleteChannel(index); break;
+                        }
+                    });
+                });
+            }
+        }
+
+        // Inicjalizacja strony
+        init();
+    </script>
+</body>
+</html>
